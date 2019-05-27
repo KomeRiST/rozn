@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:rozn"
         xmlns:viewmodels="clr-namespace:rozn"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="595.979" Width="983.378" Loaded="Window_Loaded">
+    <Window.Resources>
+        <viewmodels:DataSet1 x:Key="dataSet1"/>
+        <CollectionViewSource x:Key="cR_EGAIS_MONITOR3ViewSource" Source="{Binding CR_EGAIS_MONITOR3, Source={StaticResource dataSet1}}"/>
+        <CollectionViewSource x:Key="cR_EGAIS_TRANSPORT_SERVICEViewSource" Source="{Binding CR_EGAIS_TRANSPORT_SERVICE, Source={StaticResource dataSet1}}"/>
+    </Window.Resources>
     <Window.DataContext>
         <local:ViewModel></local:ViewModel>
         <!--<local:ApplicationContext></local:ApplicationContext>-->
@@ -14,7 +19,7 @@
     <Grid>
         <Label x:Name="label" Content="{Binding Clicks}" HorizontalAlignment="Left" Margin="732,10,0,0" VerticalAlignment="Top"/>
         <Button x:Name="button" Content="Button" Command="{Binding AddClick}" HorizontalAlignment="Left" Margin="707,60,0,0" VerticalAlignment="Top" Width="75"/>
-        <ListBox x:Name="listBox" ItemsSource="{Binding Tovary}" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="320">
+        <ListBox x:Name="listBox" ItemsSource="{Binding Source={StaticResource cR_EGAIS_MONITOR3ViewSource}}" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="320" SelectionChanged="ListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid d:DesignWidth="300">
@@ -23,14 +28,25 @@
                             <ColumnDefinition Width="5*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding id}" FontSize="12" Margin="5,0" Grid.Column="0" />
-                        <TextBlock Text="{Binding name}" FontSize="12" Margin="5,0" Grid.Column="1" />
-                        <TextBlock Text="{Binding cost}" FontSize="12" Margin="5,0" Grid.Column="2" />
+                        <TextBlock Text="{Binding IP}" FontSize="12" Margin="5,0" Grid.Column="0" />
+                        <TextBlock Text="{Binding СКЛАД_БУХ}" FontSize="12" Margin="5,0" Grid.Column="1" />
+                        <TextBlock Text="{Binding ОРГ_УИД}" FontSize="12" Margin="5,0" Grid.Column="2" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         <Label x:Name="label1" Content="Label" HorizontalAlignment="Left" Height="90" Margin="335,10,0,0" VerticalAlignment="Top" Width="305"/>
+        <!--<DataGrid x:Name="cR_EGAIS_MONITOR3DataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource cR_EGAIS_MONITOR3ViewSource}}" Margin="335,105,10,10" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="sTATUSColumn" Binding="{Binding STATUS}" Header="STATUS" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="fSRAR_IDColumn" Binding="{Binding FSRAR_ID}" Header="FSRAR ID" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="сКЛАД_БУХColumn" Binding="{Binding СКЛАД_БУХ}" Header="СКЛАД БУХ" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="iPColumn" Binding="{Binding IP}" Header="IP" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="bUILDNUMBERColumn" Binding="{Binding BUILDNUMBER}" Header="BUILDNUMBER" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="оРГ_УИДColumn" Binding="{Binding ОРГ_УИД}" Header="ОРГ УИД" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="vERSIONColumn" Binding="{Binding VERSION}" Header="VERSION" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>-->
 
     </Grid>
 </Window>

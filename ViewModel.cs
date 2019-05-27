@@ -27,9 +27,9 @@ namespace rozn
 
         public ViewModel()
         {
-            db = new ApplicationContext();
-            db.Tovars.Load();
-            Tovary = db.Tovars.Local.ToBindingList();
+            //db = new ApplicationContext();
+            //db.Tovars.Load();
+            //Tovary = db.Tovars.Local.ToBindingList();
         }
 
 
