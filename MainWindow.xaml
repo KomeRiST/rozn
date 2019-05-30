@@ -6,36 +6,218 @@
         xmlns:local="clr-namespace:rozn"
         xmlns:viewmodels="clr-namespace:rozn"
         mc:Ignorable="d"
-        Title="MainWindow" Height="595.979" Width="983.378" Loaded="Window_Loaded">
+        Title="MainWindow" Height="595.979" Width="1228.155" Loaded="Window_Loaded">
     <Window.Resources>
-        <viewmodels:DataSet1 x:Key="dataSet1"/>
-        <CollectionViewSource x:Key="cR_EGAIS_MONITOR3ViewSource" Source="{Binding CR_EGAIS_MONITOR3, Source={StaticResource dataSet1}}"/>
-        <CollectionViewSource x:Key="cR_EGAIS_TRANSPORT_SERVICEViewSource" Source="{Binding CR_EGAIS_TRANSPORT_SERVICE, Source={StaticResource dataSet1}}"/>
+        <!--<viewmodels:DataSet1 x:Key="dataSet1"/>
+        <CollectionViewSource x:Key="cR_EGAIS_MONITOR3ViewSource" Source="{Binding CR_EGAIS_MONITOR3, Source=dataSet1}"/>
+        <CollectionViewSource x:Key="cR_EGAIS_TRANSPORT_SERVICEViewSource" Source="{Binding CR_EGAIS_TRANSPORT_SERVICE, Source={StaticResource dataSet1}}"/>-->
     </Window.Resources>
     <Window.DataContext>
         <local:ViewModel></local:ViewModel>
         <!--<local:ApplicationContext></local:ApplicationContext>-->
     </Window.DataContext>
     <Grid>
-        <Label x:Name="label" Content="{Binding Clicks}" HorizontalAlignment="Left" Margin="732,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="button" Content="Button" Command="{Binding AddClick}" HorizontalAlignment="Left" Margin="707,60,0,0" VerticalAlignment="Top" Width="75"/>
-        <ListBox x:Name="listBox" ItemsSource="{Binding Source={StaticResource cR_EGAIS_MONITOR3ViewSource}}" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="320" SelectionChanged="ListBox_SelectionChanged">
+        <Label x:Name="label" Content="{Binding Clicks}" HorizontalAlignment="Left" Margin="949,12,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Button" Command="{Binding AddClick}" HorizontalAlignment="Left" Margin="838,10,0,0" VerticalAlignment="Top" Width="75"/>
+        <ListBox x:Name="listBox" ItemsSource="{Binding dataSet1.CR_EGAIS_MONITOR3}" HorizontalAlignment="Left" Margin="10,38,0,10" Width="337" SelectionChanged="ListBox_SelectionChanged" SelectedIndex="5">
+
+            <!--<ListBox.Resources>
+                <Style TargetType="ListBoxItem">
+                    <Style.Setters>
+                        <Setter Property="Foreground" Value="DarkRed"/>
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding pingReply}" Value="Success">
+                            <Setter Property="Foreground" Value="DarkGreen"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding pingReply}" Value="TimedOut">
+                            <Setter Property="Foreground" Value="MediumVioletRed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Resources>-->
+
             <ListBox.ItemTemplate>
+
+
                 <DataTemplate>
+
                     <Grid d:DesignWidth="300">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
+                            <!--<ColumnDefinition Width="1*"/>-->
+                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="5*"/>
-                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
+                        <Image x:Name="icon" Margin="5,0" Grid.Column="0" Width="24" Height="24">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding STATUS}" Value="0">
+                                            <Setter Property="Source" Value="icons\offline.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding STATUS}" Value="1">
+                                            <Setter Property="Source" Value="icons\online.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding pingReply}" Value="Success">
+                                            <Setter Property="Source" Value="icons\ok.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding pingReply}" Value="TimedOut">
+                                            <Setter Property="Source" Value="icons\timeout.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding pingReply}" Value="DestinationHostUnreachable">
+                                            <Setter Property="Source" Value="icons\error.png" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+
+                        </Image>
+                        <TextBlock Name="sclad_buh" Text="{Binding Path=СКЛАД_БУХ}" FontSize="12" Margin="5,0" Grid.Column="1" />
+                        <Image x:Name="icon_utm" Margin="5,0" Grid.Column="2" Width="24" Height="24">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding UTMReply}" Value="{x:Null}">
+                                            <Setter Property="Source" Value="icons\error.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding UTMReply}" Value="ok">
+                                            <Setter Property="Source" Value="icons\ok.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding UTMReply}" Value="408">
+                                            <Setter Property="Source" Value="icons\timeout.png" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+
+                        </Image>
+                        <!--<TextBlock Text="{Binding pingReply}" FontSize="12" Margin="5,0" Grid.Column="2" />
                         <TextBlock Text="{Binding IP}" FontSize="12" Margin="5,0" Grid.Column="0" />
-                        <TextBlock Text="{Binding СКЛАД_БУХ}" FontSize="12" Margin="5,0" Grid.Column="1" />
-                        <TextBlock Text="{Binding ОРГ_УИД}" FontSize="12" Margin="5,0" Grid.Column="2" />
+                        <TextBlock Text="{Binding ОРГ_УИД}" FontSize="12" Margin="5,0" Grid.Column="2" />-->
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Label x:Name="label1" Content="Label" HorizontalAlignment="Left" Height="90" Margin="335,10,0,0" VerticalAlignment="Top" Width="305"/>
+        <Label x:Name="label1" Content="{Binding SelectedItem.pingReply, ElementName=listBox}" HorizontalAlignment="Left" Height="26" Margin="398,10,0,0" VerticalAlignment="Top" Width="281"/>
+        <CheckBox x:Name="cBoxScanIP" Content="Монитор УТМ-ов" HorizontalAlignment="Left" Margin="234,17,0,0" VerticalAlignment="Top" IsChecked="{Binding ScanIP}"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="134,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" UndoLimit="3" Text="{Binding TimeOut}"/>
+        <Label x:Name="label2" Content="TimeOut для УТМа:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="119" Height="23"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="93" Margin="352,10,0,0" VerticalAlignment="Top" Width="231"/>
+        <Grid x:Name="grid1" DataContext="{Binding ElementName=listBox, Path=SelectedItem}" HorizontalAlignment="Left" Margin="352,140,0,0" VerticalAlignment="Top" Width="385">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="FSRAR ID:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+            <TextBox x:Name="fSRAR_IDTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="1" Text="{Binding FSRAR_ID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="IP:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox x:Name="iPTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="2" Text="{Binding IP, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="ОРГ УИД:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="оРГ_УИДTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="3" Text="{Binding ОРГ_УИД, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="VERSION:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+            <TextBox x:Name="vERSIONTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="4" Text="{Binding VERSION, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="СКЛАД БУХ:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
+            <TextBox x:Name="сКЛАД_БУХTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="5" Text="{Binding СКЛАД_БУХ, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="CHANGESET:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="6" VerticalAlignment="Center"/>
+            <TextBox x:Name="cHANGESETTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="6" Text="{Binding CHANGESET, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="BUILDNUMBER:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center"/>
+            <TextBox x:Name="bUILDNUMBERTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="7" Text="{Binding BUILDNUMBER, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="AКТ:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="12" VerticalAlignment="Center"/>
+            <TextBox x:Name="aКТTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="12" Text="{Binding AКТ, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="МАГ:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="13" VerticalAlignment="Center"/>
+            <TextBox x:Name="мАГTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="13" Text="{Binding МАГ, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+            <Label Content="УИД:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="20" VerticalAlignment="Center"/>
+            <TextBox x:Name="уИДTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-147,4" Grid.Row="20" Text="{Binding УИД, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="272"/>
+        </Grid>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="100" Margin="742,140,0,0" VerticalAlignment="Top" Width="100"/>
+        <ListBox x:Name="listBox1" DataContext="{Binding FilterTable}" HorizontalAlignment="Left" Height="513" Margin="847,43,0,0" VerticalAlignment="Top" Width="363">
+            <ListBox.ItemTemplate>
+
+
+                <DataTemplate>
+
+                    <Grid d:DesignWidth="300">
+                        <Grid.ColumnDefinitions>
+                            <!--<ColumnDefinition Width="1*"/>-->
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="icon" Margin="5,0" Grid.Column="0" Width="24" Height="24">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding STATUS}" Value="0">
+                                            <Setter Property="Source" Value="icons\offline.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding STATUS}" Value="1">
+                                            <Setter Property="Source" Value="icons\online.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding pingReply}" Value="Success">
+                                            <Setter Property="Source" Value="icons\ok.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding pingReply}" Value="TimedOut">
+                                            <Setter Property="Source" Value="icons\timeout.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding pingReply}" Value="DestinationHostUnreachable">
+                                            <Setter Property="Source" Value="icons\error.png" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+
+                        </Image>
+                        <TextBlock Name="sclad_buh" Text="{Binding Path=СКЛАД_БУХ}" FontSize="12" Margin="5,0" Grid.Column="1" />
+                        <Image x:Name="icon_utm" Margin="5,0" Grid.Column="2" Width="24" Height="24">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding UTMReply}" Value="{x:Null}">
+                                            <Setter Property="Source" Value="icons\error.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding UTMReply}" Value="ok">
+                                            <Setter Property="Source" Value="icons\ok.png" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding UTMReply}" Value="408">
+                                            <Setter Property="Source" Value="icons\timeout.png" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+
+                        </Image>
+                        <!--<TextBlock Text="{Binding pingReply}" FontSize="12" Margin="5,0" Grid.Column="2" />
+                        <TextBlock Text="{Binding IP}" FontSize="12" Margin="5,0" Grid.Column="0" />
+                        <TextBlock Text="{Binding ОРГ_УИД}" FontSize="12" Margin="5,0" Grid.Column="2" />-->
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="button1" Command="{Binding SetFilterTable}" Content="Button" HorizontalAlignment="Left" Margin="1135,10,0,0" VerticalAlignment="Top" Width="75"/>
         <!--<DataGrid x:Name="cR_EGAIS_MONITOR3DataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource cR_EGAIS_MONITOR3ViewSource}}" Margin="335,105,10,10" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="sTATUSColumn" Binding="{Binding STATUS}" Header="STATUS" Width="SizeToHeader"/>
